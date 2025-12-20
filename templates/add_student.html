@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Add Student - Teacher's Hub{% endblock %}
+{% block content %}
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Add Student</h1>
+        </div>
+    </div>
+
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>Student Information</h3>
+            </div>
+
+            <form action="{% url 'add_student' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="student_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="full_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select id="department" name="department" required>
+                        <option value="">Select Department</option>
+                        {% for department in departments %}
+                        <option value="{{ department.id }}">{{ department.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="semester">Semester</label>
+                    <select id="semester" name="semester" required>
+                        <option value="">Select Semester</option>
+                        {% for semester in semesters %}
+                        <option value="{{ semester.id }}" data-dept="{{ semester.department.id }}">
+                            Semester {{ semester.number }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-download">Save Student</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- <script>
+    // Filter semesters by department
+    const deptSelect = document.getElementById('department');
+    const semSelect = document.getElementById('semester');
+    const allOptions = Array.from(semSelect.options);
+
+    deptSelect.addEventListener('change', () => {
+        const deptId = deptSelect.value;
+        semSelect.innerHTML = '<option value="">Select Semester</option>';
+        allOptions.forEach(opt => {
+            if (!opt.dataset.dept) return;
+            if (opt.dataset.dept === deptId) {
+                semSelect.appendChild(opt);
+            }
+        });
+    });
+</script> -->
+{% endblock %}

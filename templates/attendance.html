@@ -1,0 +1,94 @@
+
+{%extends 'base.html'%}
+{% block title %}Attendance - Teacher's Hub{% endblock %}
+{% load static %}
+
+{%block content%}
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Attendance</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Attendance</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Take Attendance</h3>
+					</div>
+					<div class="attendance-controls">
+						<div class="form-group">
+							<label for="department-select">Department:</label>
+							<select id="department-select">
+								<option value="">Select Department</option>
+								{% for dept in department%}
+									<option value="{{dept.id}}">
+										{{dept.name}}({{dept.code}})
+									</option>
+								{%endfor%}
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="semester-select">Semester:</label>
+							<select id="semester-select">
+								<option value="">Select Semester</option>
+								{% for sem in semester %}
+									<option value="{{sem.id}}">
+										{{sem.number}}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="subject-select">Subject:</label>
+							<select id="subject-select">
+								<option value="">Select Subject</option>
+								<!-- Options will be populated dynamically by JS -->
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="attendance-date">Date:</label>
+							<input type="date" id="attendance-date">
+						</div>
+						<button type="button" class="btn-load-students">Load Students</button>
+					</div>
+
+					<div class="student-attendance-list">
+						<form id="attendance-form">
+							{% csrf_token %}
+							<table>
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody id="attendance-students-body">
+									<!-- Student rows will be dynamically populated by JS -->
+								</tbody>
+							</table>
+							<button type="submit" class="btn-submit-attendance">Submit Attendance</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+<script>
+	const get_subjects_url = "{% url 'get_subjects' %}";
+	const get_students_url = "{% url 'get_students' %}";
+	const save_attendance_url = "{% url 'save_attendance' %}";
+	const csrf_token = "{{ csrf_token }}";
+</script>
+<script src="{% static 'js/attendance.js' %}"></script>
+{%endblock%}

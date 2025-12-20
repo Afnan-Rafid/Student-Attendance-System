@@ -1,0 +1,99 @@
+{%extends 'base.html'%}
+{% block title %}Dashboard - Teacher's Hub{% endblock %}
+{%load static%}
+{%block content%}
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Dashboard</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Dashboard</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+
+			<form action="{% url 'index' %}" method="GET" class="department-filter">
+				<label for="department-select">Filter by Department:</label>
+				<select id="department-select" name="department">
+					<option value="">All</option>
+				    {% for dept in department %}
+						<option value="{{dept.id}}" {% if request.GET.department == dept.id|stringformat:"s" %}selected{% endif %}>{{dept.name}}</option>
+					{% endfor %}
+				</select>
+				<label for="semester-select">Filter by Semester:</label>
+				<select id="semester-select" name="semester">
+					<option value="">All</option>
+					{% for sem in semester %}
+						<option value="{{sem.id}}" {% if request.GET.semester == sem.id|stringformat:"s" %}selected{% endif %}>{{sem.number}}</option>
+					{% endfor %}
+				</select>
+				<button type="submit">Filter</button>
+			</form>
+
+
+			<ul class="box-info">
+				<li>
+					<i class='bx bxs-group' ></i>
+					<span class="text">
+						<h3>{{student_count}}</h3>
+						<p>Total Students</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-book-open'></i>
+					<span class="text">
+						<h3>{{subject_count}}</h3>
+						<p>Total Subjects</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-user-detail'></i>
+					<span class="text">
+						<h3>{{teacher_count}}</h3>
+						<p>Total Teachers</p>
+					</span>
+				</li>
+			</ul>
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Student List</h3>
+						<i class='bx bx-search' ></i>
+						<i class='bx bx-filter' ></i>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Phone</th>
+								<th>Department</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for student in student%}
+							<tr>
+								<td>{{student.student_id}}</td>
+								<td>{{student.name}}</td>
+								<td>{{student.email}}</td>
+								<td>{{student.phone}}</td>
+								<td>{{student.department}}</td>
+								<td><span class="status completed">Regular</span></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+{%endblock%}

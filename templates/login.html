@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Teacher's Hub</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .password-wrapper { position: relative; }
+        .toggle-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body class="login-body">
+
+<div class="login-container">
+    <form method="POST" class="login-form">
+        {% csrf_token %}
+
+        <h2>Teacher Login</h2>
+
+        <!-- ALERT MESSAGE -->
+        {% for message in messages %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" name="username" required>
+        </div>
+
+        <div class="input-group password-wrapper">
+            <label>Password</label>
+            <input type="password" name="password" id="passwordInput" required>
+            <i class='bx bx-hide toggle-icon' id="toggleIcon"></i>
+        </div>
+
+        <button type="submit" class="btn-login">Login</button>
+    </form>
+    <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+</div>
+
+<script>
+  const pwdInput = document.getElementById("passwordInput");
+  const icon = document.getElementById("toggleIcon");
+
+  icon.addEventListener("click", () => {
+    if (pwdInput.type === "password") {
+      pwdInput.type = "text";
+      icon.classList.remove("bx-hide");
+      icon.classList.add("bx-show");
+    } else {
+      pwdInput.type = "password";
+      icon.classList.remove("bx-show");
+      icon.classList.add("bx-hide");
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Teacher's Hub</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .password-wrapper { position: relative; }
+        .toggle-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body class="login-body">
+
+<div class="login-container">
+    <form method="POST" action="" class="login-form">
+        {% csrf_token %}
+
+        <h2>Teacher Registration</h2>
+
+        <div class="input-group">
+            <label>Username</label>
+            {{ form.username }}
+        </div>
+
+        <div class="input-group">
+            <label>First Name</label>
+            {{ form.first_name }}
+        </div>
+
+        <div class="input-group">
+            <label>Last Name</label>
+            {{ form.last_name }}
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            {{ form.email }}
+        </div>
+
+        <div class="input-group password-wrapper">
+            <label>Password</label>
+            {{ form.password1 }}
+            <i class='bx bx-hide toggle-icon' id="togglePassword1"></i>
+        </div>
+
+        <div class="input-group password-wrapper">
+            <label>Confirm Password</label>
+            {{ form.password2 }}
+            <i class='bx bx-hide toggle-icon' id="togglePassword2"></i>
+        </div>
+
+        <button type="submit" class="btn-login">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+
+<script>
+    const pwd1 = document.getElementById("id_password1");
+    const icon1 = document.getElementById("togglePassword1");
+
+    const pwd2 = document.getElementById("id_password2");
+    const icon2 = document.getElementById("togglePassword2");
+
+    icon1.addEventListener("click", () => {
+        if (pwd1.type === "password") {
+            pwd1.type = "text";
+            icon1.classList.remove("bx-hide");
+            icon1.classList.add("bx-show");
+        } else {
+            pwd1.type = "password";
+            icon1.classList.remove("bx-show");
+            icon1.classList.add("bx-hide");
+        }
+    });
+
+    icon2.addEventListener("click", () => {
+        if (pwd2.type === "password") {
+            pwd2.type = "text";
+            icon2.classList.remove("bx-hide");
+            icon2.classList.add("bx-show");
+        } else {
+            pwd2.type = "password";
+            icon2.classList.remove("bx-show");
+            icon2.classList.add("bx-hide");
+        }
+    });
+</script>
+
+</body>
+</html>

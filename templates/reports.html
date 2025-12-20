@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Reports - Teacher's Hub{% endblock %}
+{% block content %}
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Attendance Reports</h1>
+            <ul class="breadcrumb">
+                <li><a href="#">Reports</a></li>
+                <li><i class='bx bx-chevron-right'></i></li>
+                <li><a class="active" href="#">Attendance</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>Attendance Sessions</h3>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Department</th>
+                        <th>Semester</th>
+                        <th>Date</th>
+                        <th>Taken By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for session in sessions %}
+                    <tr>
+                        <td>{{ session.subject.name }}</td>
+                        <td>{{ session.department.name }}</td>
+                        <td>{{ session.semester.number }}</td>
+                        <td>{{ session.date }}</td>
+                        <td>{{ session.taken_by.username }}</td>
+                        <td>
+                            <a href="{% url 'export_attendance_json' session.id %}" class="btn-download">
+                                JSON
+                            </a>
+                            <a href="{% url 'export_attendance_csv' session.id %}" class="btn-download">
+                                CSV
+                            </a>
+                            <a href="#" class="btn-view view-details" data-target="details-{{ session.id }}">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr id="details-{{ session.id }}" class="details-row" style="display: none;">
+                        <td colspan="6">
+                            <table class="details-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in session.attendance_details %}
+                                    <tr>
+                                        <td>{{ record.name }}</td>
+                                        <td>
+                                            {% if record.status == 'present' %}
+                                                <span style="color: green;">Present</span>
+                                            {% else %}
+                                                <span style="color: red;">Absent</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="2">No attendance data</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No attendance sessions found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".view-details").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.getElementById(this.dataset.target);
+            if (target) {
+                target.style.display = target.style.display === "none"
+                    ? "table-row"
+                    : "none";
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

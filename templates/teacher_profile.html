@@ -1,0 +1,73 @@
+{%extends 'base.html'%}
+{% block title %}Profile - Teacher's Hub{% endblock %}
+{% load static %}
+{%block content%}
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Teacher Profile</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Profile</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Teacher</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Profile Information</h3>
+					</div>
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'teacher_profile' %}">
+                        {% csrf_token %}
+                        <div class="profile-info">
+                            <div class="profile-pic">
+                                {% if profile.profile_picture and profile.profile_picture.name %}
+                                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="img-profile">
+                                {% else %}
+                                    <img src="{% static 'img/default.jpg' %}" alt="Default Profile" class="img-profile">
+                                {% endif %}
+
+                            </div>
+                            <div class="profile-details">
+                                <div class="form-group">
+                                    <label for="{{ user_form.first_name.id_for_label }}">First Name</label>
+                                    {{ user_form.first_name }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ user_form.last_name.id_for_label }}">Last Name</label>
+                                    {{ user_form.last_name }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ user_form.email.id_for_label }}">Email</label>
+                                    {{ user_form.email }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ profile_form.profile_picture.id_for_label }}">Profile Picture</label>
+                                    {{ profile_form.profile_picture }}
+                                </div>
+                                <button type="submit" class="btn-save">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+				</div>
+			</div>
+		</main>
+		<!-- MAIN -->
+					
+{%endblock%}
