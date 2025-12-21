@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.forms import UserForm, ProfileForm
 from accounts.models import Profile
+from django.db.models.functions import Cast
+from django.db.models import IntegerField
 
 # Create your views here.
 
@@ -20,6 +22,8 @@ def index(request):
     students = Student.objects.all()
     department = Department.objects.all()
     semester = Semester.objects.all()
+    
+    students = Student.objects.annotate(sid=Cast('student_id', IntegerField())).order_by('sid')
 
     department_id = request.GET.get('department')
     semester_id = request.GET.get('semester')

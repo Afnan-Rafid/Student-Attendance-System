@@ -6,6 +6,8 @@ from django.http import JsonResponse, HttpResponse
 from .models import  AttendanceSession
 import json
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import Cast
+from django.db.models import IntegerField
 
 # Create your views here.
 
@@ -23,7 +25,7 @@ def attendance(request):
 def get_students(request):
     department_id = request.GET.get('department_id')
     semester_id = request.GET.get('semester_id')
-    students = Student.objects.filter(department_id=department_id, semester_id=semester_id).values('student_id','name')
+    students = Student.objects.filter(department_id=department_id, semester_id=semester_id).annotate(student_id_int=Cast('student_id', IntegerField())).order_by('student_id_int').values('student_id', 'name')
     print(f"Students fetched: {list(students)}")
     return JsonResponse(list(students), safe=False)
 
