@@ -76,6 +76,7 @@ def attendance_report(request):
             student = students.get(student_id)
             if student:
                 session.attendance_details.append({
+                    'student_id': student.student_id,
                     'name': student.name,
                     'status': 'present' if status == 'P' else 'absent'
                 })
