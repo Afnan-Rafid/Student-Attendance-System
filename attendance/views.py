@@ -75,14 +75,22 @@ def attendance_report(request):
         for student_id, status in session.attendance_data.items():
             student = students.get(student_id)
             if student:
-                session.attendance_details.append({'name': student.name, 'status': status})
+                session.attendance_details.append({
+                    'name': student.name,
+                    'status': 'present' if status == 'P' else 'absent'
+                })
 
     return render(request, 'reports.html', {'sessions': sessions})
 
 
 def export_attendance_json(request, session_id):
     session = get_object_or_404(AttendanceSession, id=session_id)
-    response = JsonResponse(session.attendance_data)
+    
+    attendance_data = {}
+    for student_id, status in session.attendance_data.items():
+        attendance_data[student_id] = 'present' if status == 'P' else 'absent'
+        
+    response = JsonResponse(attendance_data)
     response['Content-Disposition'] = f'attachment; filename="attendance_session_{session_id}.json"'
     return response
 
@@ -103,10 +111,10 @@ def export_attendance_csv(request, session_id):
         try:
             student = students.get(student_id)
             if student:
-                writer.writerow([student_id, student.name, status])
+                writer.writerow([student_id, student.name, 'present' if status == 'P' else 'absent'])
             else:
-                writer.writerow([student_id, 'Student not found', status])
+                writer.writerow([student_id, 'Student not found', 'present' if status == 'P' else 'absent'])
         except ValueError:
-            writer.writerow([student_id, 'Invalid ID', status])
+            writer.writerow([student_id, 'Invalid ID', 'present' if status == 'P' else 'absent'])
 
     return response
