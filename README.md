@@ -2,6 +2,10 @@
 
 A simple **Django-based Student Attendance Management System** for managing students, subjects, and daily attendance.
 
+# 🌐 Live Demo
+
+# 🔗 https://afnan12.pythonanywhere.com/
+
 ---
 
 ## 🚀 Features
@@ -38,9 +42,10 @@ pip install django
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
-🌐 Live Demo
-🔗 https://afnan12.pythonanywhere.com/
+```
 
 👨‍💻 Author
 Afnan Rafid (Master)
+
 GitHub: https://github.com/Afnan-Rafid
+
